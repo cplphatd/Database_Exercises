@@ -34,7 +34,7 @@ WHERE hire_date BETWEEN '1990-01-01' AND '1999-12-31';
 SELECT *
 FROM employees
 WHERE (hire_date BETWEEN '1990-01-01' AND '1999-12-31')
-AND birth_date LIKE '%%%%-12-25';
+AND birth_date LIKE '%-12-25';
 
 # Employees with a 'q' in their last name — 1,873 rows.
 
