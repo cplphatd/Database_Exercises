@@ -58,12 +58,18 @@ ORDER BY `Department Name`;
 #  and their current manager's name.
 SELECT
   concat(e.first_name, ' ', e.last_name) AS 'Employee Name',
-  d.dept_name AS 'Department'
+  d.dept_name AS 'Department',
+  concat(managers.first_name, ' ', managers.last_name) AS 'Manager'
 FROM employees AS e
 JOIN dept_emp AS de
   ON e.emp_no = de.emp_no
 JOIN departments AS d
   ON de.dept_no = d.dept_no
+JOIN dept_manager AS dm
+  ON d.dept_no = dm.dept_no
+JOIN employees AS managers
+  ON dm.emp_no = managers.emp_no
 WHERE de.to_date LIKE '9999%'
+  AND dm.to_date LIKE '9999%'
 ORDER BY Department;
 
