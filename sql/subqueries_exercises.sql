@@ -25,6 +25,15 @@ WHERE e.first_name IN (
   WHERE first_name = 'Aamod')
 GROUP BY Title;
 
+#alternative solution to titles held by Aamods (without use of JOIN)
+SELECT title
+FROM titles
+WHERE emp_no IN (
+  SELECT emp_no
+  FROM employees
+  WHERE first_name = 'Aamod')
+GROUP BY title;
+
 # Find all the department managers that are female.
 SELECT
   concat(e.first_name, ' ', e.last_name) AS 'Name'
@@ -36,6 +45,15 @@ WHERE e.gender IN (
   FROM employees
   WHERE gender = 'f'
 ) AND dm.to_date LIKE '9999%';
+
+#alternative solution to female department managers (dependent subquery)
+SELECT concat(first_name, ' ', last_name) AS 'Name'
+FROM employees
+WHERE emp_no IN (
+  SELECT emp_no
+  FROM dept_manager
+  WHERE employees.gender = 'f'
+  AND dept_manager.to_date LIKE '9999%');
 
 # BONUS Find all the department names that have female managers.
 SELECT d.dept_name AS 'Department'
@@ -49,6 +67,19 @@ WHERE gender IN (
   FROM employees
   WHERE gender = 'f'
 ) AND dm.to_date LIKE '9999%';
+
+#alternative solution to bonus
+SELECT dept_name
+FROM departments
+WHERE dept_no IN (
+  SELECT dept_no
+  FROM dept_manager
+  WHERE emp_no IN (
+    SELECT emp_no
+    FROM employees
+    WHERE gender = 'f'
+  )
+);
 
 #can use sub-queries as replacements for tables (must be aliased)
 SELECT *
