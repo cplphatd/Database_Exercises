@@ -1,3 +1,7 @@
+# Sub-queries should be independent of the overall query.
+# A simple test is to run the sub-query on its own.
+# If it runs without an error, the sub-query is independent.
+
 # Find all the employees with the same hire date as employee
 # 101010 using a sub-query.
 SELECT
@@ -45,3 +49,19 @@ WHERE gender IN (
   FROM employees
   WHERE gender = 'f'
 ) AND dm.to_date LIKE '9999%';
+
+#can use sub-queries as replacements for tables (must be aliased)
+SELECT *
+FROM (SELECT *
+      FROM departments
+      WHERE dept_name LIKE 'd%') AS Departments_starting_with_D;
+
+#you can use sub-queries to get scalar values that you can use in
+# the select clause (each sub-query should only have one column)
+SELECT
+  (SELECT count(*)
+  FROM employees
+  WHERE gender = 'F') AS women_count,
+  (SELECT count(*)
+  FROM employees
+  WHERE gender = 'M') AS men_count;
